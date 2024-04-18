@@ -1,37 +1,14 @@
-import useLinkedin from './hooks/useLinkedin';
-import { Avatar, Card, CardContent, Typography, CircularProgress, List, ListItem, ListItemText } from '@mui/material';
+import useOpenAI from './hooks/useOpenAI';
 
 
 // just for testing (obviously) if the hook works
 const LinkedInProfileComponent: React.FC = () => {
-  const { profile, loading, error } = useLinkedin(''); // full linkedin url
+  // const { profile, loading, error } = useLinkedin(''); // full linkedin url
 
-  if (loading) return <CircularProgress />;
-  if (error) return <Typography color="error">Error: {error}</Typography>;
-  if (!profile) return <Typography>No profile data found.</Typography>;
+  const { data } = useOpenAI('{ "startEndDate": { "start": { "month": 8, "year": 2023 } }, "title": "Web Developer", "contractType": "Full-time", "description": "Developing & maintaining websites/applications using:\n- JavaScript/TypeScript\n- React.js \n- Astro.js\n- Keystone.js (CMS)\n- CSS/Sass/POSTCSS\n- Nunjucks", "companyName": "BOLD ", "companyLocation": "Warsaw, Mazowieckie, Poland · Hybrid", "companyLogo": "https://media.licdn.com/dms/image/C560BAQEVXg3MuONCzQ/company-logo_200_200/0/1656690549710/boldlimited_logo?e=1721260800&v=beta&t=GImCLfj1SPP-dE8v-vsmx47fljnHQgWvqCVeed6BBSw", "linkedInUrl": "https://www.linkedin.com/company/10490165/", "linkedInId": "10490165" }');
 
   return (
-    <Card>
-      <CardContent>
-        <Avatar src={profile.person.photoUrl} alt={`${profile.person.firstName} ${profile.person.lastName}`} sx={{ width: 100, height: 100, marginBottom: 2 }} />
-        <Typography variant="h5">{profile.person.firstName} {profile.person.lastName}</Typography>
-        <Typography variant="subtitle1">{profile.person.headline}</Typography>
-        <Typography variant="body2" color="textSecondary">{profile.person.location}</Typography>
-        <Typography variant="body2">Followers: {profile.person.followerCount}</Typography>
-        <Typography variant="body2">Connections: {profile.person.connectionCount}</Typography>
-        <Typography variant="h6" sx={{ mt: 2 }}>Positions:</Typography>
-        <List dense>
-          {profile.person.positions.positionHistory.map((position: any, index: number) => (
-            <ListItem key={index} divider>
-              <ListItemText
-                primary={position.title}
-                secondary={`${position.companyName} - ${position.description}`}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </CardContent>
-    </Card>
+    <div>{JSON.stringify(data)}</div>
   );
 };
 
