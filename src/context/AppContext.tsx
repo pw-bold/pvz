@@ -84,7 +84,7 @@ export const AppContextProvider = ({ children }) => {
       // console.log('response:', response.profile);
       // UNCOMMENT later
       // setUserData(response.profile); // Update context with fetched data
-      setUserData(mockedData);
+      setUserData(mockedData); // mock data for now to avoid expensive api calls
       setLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error);

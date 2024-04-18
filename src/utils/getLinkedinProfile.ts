@@ -46,9 +46,8 @@ const getLinkedinProfile = async (linkedinUrl: string): Promise<UseLinkedinHookP
     return { profile: null, loading: false, error: 'No LinkedIn URL provided' };
   }
 
-  // todo: move this to .env file, maybe add two more keys just in case and method to switch between them if one returns error
-  const API_KEY = 'sk_live_6620f14c5158970618b448c4_key_nq2srhj76z';
-  // const API_KEY = '';
+  // todo: maybe add two more keys just in case and method to switch between them if one returns error
+  const API_KEY = import.meta.env.VITE_SCRAPIN_KEY_1 as string;
 
   try {
     const response = await fetch(`/api?apikey=${API_KEY}&linkedinUrl=${encodeURIComponent(linkedinUrl)}`, {

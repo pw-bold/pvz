@@ -1,7 +1,8 @@
 import { Button, TextField, Checkbox } from '@mui/material';
 import styles from './Experience.module.css';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import AppContext, { Steps } from '../../context/AppContext';
+import useOpenAI from '../../hooks/useOpenAI';
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -10,6 +11,7 @@ const MONTHS = [
 
 function Experience({ }) {
   const { fetchedPersonData, updateStep, updateExperienceInfo } = useContext(AppContext);
+  const [selectedExperienceIndex, setSelectedExperienceIndex] = useState<number | null>(null);
 
   const { positionHistory } = fetchedPersonData.person.positions;
 
@@ -17,15 +19,25 @@ function Experience({ }) {
     updateExperienceInfo(idx, key, value)
   }
 
-  const onImproveHandler = () => {
-    // TODO: add
-    // you can now use onChangeHandler
-  }
+  const { data, loading, error, fetchData } = useOpenAI();
+
+  const onImproveHandler = (idx: number) => {
+    const experience = JSON.stringify(positionHistory[idx]);
+    fetchData(experience);
+    setSelectedExperienceIndex(idx);
+  };
 
 
   const onSaveHandler = () => {
     updateStep(Steps.Education);
   }
+
+  useEffect(() => {
+    if (data && data.choices && data.choices.length > 0) {
+      const parsedResponse = JSON.parse(data.choices[0].message.content);
+      updateExperienceInfo(selectedExperienceIndex, 'description', parsedResponse.improvedJobDescription);
+    }
+  }, [data, selectedExperienceIndex, updateExperienceInfo]);
 
   return <div className={styles.headingWrapper}>
     <div className={styles.heading}>
@@ -52,7 +64,15 @@ function Experience({ }) {
           <TextField multiline type='text' label='Description' name='description' value={[position.description]}
             onChange={(e) => onChangeHandler(idx, e.target.name, e.target.value)}
           />
-          <Button color='success' style={{ alignSelf: 'flex-end' }} variant='contained' onClick={() => onImproveHandler()}>Improve with AI 🪄🪄🪄</Button>
+          <Button
+            color='success'
+            style={{ alignSelf: 'flex-end' }}
+            variant='contained'
+            onClick={() => onImproveHandler(idx)}
+            disabled={loading}
+          >
+            {loading ? 'Improving...' : 'Improve with AI 🪄🪄🪄'}
+          </Button>
           <div className={styles.formEntry}>
             <TextField type='number' placeholder='Year' label='Start Date' name='location_country' value={position.startEndDate.start.year} />
             <TextField type='text' placeholder='Month' value={MONTHS[position.startEndDate.start?.month - 1]} />
