@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import useLinkedin from './hooks/useLinkedin';
+import { Avatar, Card, CardContent, Typography, CircularProgress, List, ListItem, ListItemText } from '@mui/material';
 
-function App() {
-  const [count, setCount] = useState(0)
+// just for testing (obviously) if the hook works
+const LinkedInProfileComponent: React.FC = () => {
+  const { profile, loading, error } = useLinkedin(''); // full linkedin url
+
+  if (loading) return <CircularProgress />;
+  if (error) return <Typography color="error">Error: {error}</Typography>;
+  if (!profile) return <Typography>No profile data found.</Typography>;
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Card>
+      <CardContent>
+        <Avatar src={profile.person.photoUrl} alt={`${profile.person.firstName} ${profile.person.lastName}`} sx={{ width: 100, height: 100, marginBottom: 2 }} />
+        <Typography variant="h5">{profile.person.firstName} {profile.person.lastName}</Typography>
+        <Typography variant="subtitle1">{profile.person.headline}</Typography>
+        <Typography variant="body2" color="textSecondary">{profile.person.location}</Typography>
+        <Typography variant="body2">Followers: {profile.person.followerCount}</Typography>
+        <Typography variant="body2">Connections: {profile.person.connectionCount}</Typography>
+        <Typography variant="h6" sx={{ mt: 2 }}>Positions:</Typography>
+        <List dense>
+          {profile.person.positions.positionHistory.map((position: any, index: number) => (
+            <ListItem key={index} divider>
+              <ListItemText
+                primary={position.title}
+                secondary={`${position.companyName} - ${position.description}`}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </CardContent>
+    </Card>
+  );
+};
 
-export default App
+export default LinkedInProfileComponent;
