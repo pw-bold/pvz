@@ -1,12 +1,14 @@
+
 import { createContext, useReducer, useState } from "react";
 import getLinkedinProfile from "../utils/getLinkedinProfile";
+
 import { mockedData } from "../mock/mockedData";
 
 export enum Steps {
   Welcome,
   Templates,
   Start, // optional droprdown
-  PersonalInfo,
+  Heading,
   Experience,
   Education,
   Skills,
@@ -59,6 +61,7 @@ export const AppContextProvider = ({ children }) => {
   const [step, setStep] = useState<Steps>(Steps.Welcome);
   const [userData, setUserData] = useState(null);
 
+
   const updateStateWithFetchedData = async (url) => {
     try {
       const response = await getLinkedinProfile(url);
@@ -68,6 +71,7 @@ export const AppContextProvider = ({ children }) => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+
   }
 
   const updateStep = (step: Steps) => {
