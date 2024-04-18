@@ -1,4 +1,4 @@
-const data = {
+export const data = {
   "success": true,
   "person": {
       "publicIdentifier": "viktoriia-holovko-670115160",
