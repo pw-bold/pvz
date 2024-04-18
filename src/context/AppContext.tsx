@@ -1,11 +1,11 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useState } from "react";
 import { mockedData } from "../mock/mockedData";
 
 export enum Steps {
   Welcome,
   Templates,
   Start, // optional droprdown
-  PersonalInfo,
+  Heading,
   Experience,
   Education,
   Skills,
@@ -62,7 +62,7 @@ export const AppContextProvider = ({ children }) => {
 
   const updateStateWithFetchedData = async(url) => {
     // try {
-    //   const response = await fetch('your-api-url');
+    //   const response = await fetch(url);
     //   const data = await response.json();
     //   setData(data); // Update context with fetched data
     // } catch (error) {
