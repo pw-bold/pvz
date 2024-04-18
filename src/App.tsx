@@ -1,10 +1,13 @@
 import useOpenAI from './hooks/useOpenAI';
 import { useContext } from "react"
 import AppContext, { Steps } from "./context/AppContext"
-import StartScreen from "./screens/StartScreen";
+import StartScreen from "./screens/StartScreen/StartScreen";
 
 import styles from './App.module.css';
 import { Container } from "@mui/material";
+import Heading from "./screens/Heading/Heading";
+import Experience from "./screens/Expierience/Experience";
+import Education from "./screens/Education/Education";
 
 function App({ }) {
   const { step, setStep } = useContext(AppContext);
@@ -13,6 +16,9 @@ function App({ }) {
 
   return <Container maxWidth='lg' className={styles.mainContainer}>
     {step === Steps.Welcome && <StartScreen />}
+    {step === Steps.Heading && <Heading /> }
+    {step === Steps.Experience && <Experience />}
+    {step === Steps.Education && <Education />}
     
     {/* <button onClick={() => updateStateWithFetchedData('url')}>Fetch</button>
 

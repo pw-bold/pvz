@@ -1,8 +1,8 @@
-import { Container, Box, Button, Modal, TextField } from "@mui/material";
+import { Box, Button, Modal, TextField } from "@mui/material";
 
 import styles from './StartScreen.module.css';
 import { useContext, useState } from "react";
-import AppContext, { Steps } from "../context/AppContext";
+import AppContext, { Steps } from "../../context/AppContext";
 
 const OPTIONS = [
   {
@@ -51,7 +51,7 @@ function StartScreen({ }) {
       setIsModalOpen(true);
     }
     if (choice === 'new') {
-      updateStep(Steps.PersonalInfo);
+      updateStep(Steps.Heading);
     }
     if (choice === 'upload') {
       return
@@ -61,7 +61,7 @@ function StartScreen({ }) {
   const handleImport = () => {
     if (!userInput) return;
     updateStateWithFetchedData(userInput);
-    updateStep(Steps.PersonalInfo);
+    updateStep(Steps.Heading);
   }
 
   return <div className={styles.container}>
