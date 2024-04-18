@@ -11,7 +11,7 @@ import Skills from "./screens/Skills/Skills";
 import Summary from "./screens/Summary/Summary";
 
 function App({ }) {
-  const { step, setStep } = useContext(AppContext);
+  const { step } = useContext(AppContext);
 
   return <Container maxWidth='lg' className={styles.mainContainer}>
     {step === Steps.Welcome && <StartScreen />}
