@@ -1,9 +1,9 @@
-import React from 'react';
 import useLinkedin from './hooks/useLinkedin';
 import { Avatar, Card, CardContent, Typography, CircularProgress, List, ListItem, ListItemText } from '@mui/material';
 
+// just for testing (obviously) if the hook works
 const LinkedInProfileComponent: React.FC = () => {
-  const { profile, loading, error } = useLinkedin('https://www.linkedin.com/in/julien-keraval-visum');
+  const { profile, loading, error } = useLinkedin(''); // full linkedin url
 
   if (loading) return <CircularProgress />;
   if (error) return <Typography color="error">Error: {error}</Typography>;
