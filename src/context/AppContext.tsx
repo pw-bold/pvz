@@ -23,7 +23,9 @@ interface AppContextType {
   updateStateWithFetchedData: (url: string) => void;
   updateStep: (step: Steps) => void;
   updatePersonalInfo: (key: string, value: string) => void;
-  updateExperienceInfo(idx: number, key: string, value: string)
+  updateExperienceInfo: (idx: number, key: string, value: string) => void;
+  updateEducationInfo: (idx: number, key: string, value: string) => void;
+  onRemoveSkill: (type: 'languages' | 'skills', skill: string) => void;
 }
 
 const defaultState: AppContextType = {
@@ -61,7 +63,9 @@ const defaultState: AppContextType = {
   updateStep: () => { },
   updatePersonalInfo: () => { },
   startLoading: () => { },
-  updateExperienceInfo: () => {},
+  updateExperienceInfo: () => { },
+  updateEducationInfo: () => { },
+  onRemoveSkill: () => {},
 }
 
 const AppContext = createContext(defaultState);
@@ -78,6 +82,7 @@ export const AppContextProvider = ({ children }) => {
       // const response = await getLinkedinProfile(url);
       setLoading(true);
       // console.log('response:', response.profile);
+      // UNCOMMENT later
       // setUserData(response.profile); // Update context with fetched data
       setUserData(mockedData); // mock data for now to avoid expensive api calls
       setLoading(false)
@@ -97,7 +102,7 @@ export const AppContextProvider = ({ children }) => {
     setUserData((prevState) => ({ ...prevState, person: { ...prevState.person, [key]: value } }))
   }
 
-  const updateExperienceInfo = (idx, key: string, value: string) => {
+  const updateExperienceInfo = (idx: number, key: string, value: string) => {
     setUserData((prevState) => ({
       ...prevState,
       person: {
@@ -108,6 +113,33 @@ export const AppContextProvider = ({ children }) => {
         }
       }
     }))
+  }
+
+  const updateEducationInfo = (idx: number, key: string, value: string) => {
+    setUserData((prevState) => ({
+      ...prevState,
+      person: {
+        ...prevState.person,
+        schools: {
+          ...prevState.person.schools,
+          educationHistory: prevState.person.schools.educationHistory.map((it, i) => idx === i ? ({ ...it, [key]: value }) : it)
+        }
+      }
+    }))
+  }
+
+  const onRemoveSkill = (type: 'languages' | 'skills', skill: string) => {
+    setUserData((prevState) => {
+      const newState = {
+        ...prevState,
+        person: {
+          ...prevState.person,
+          [type]: prevState.person[type].filter(item => item !== skill)
+        }
+      }
+      return newState;
+    }
+    )
   }
 
   const startLoading = () => setLoading(true);
@@ -121,6 +153,8 @@ export const AppContextProvider = ({ children }) => {
     updatePersonalInfo,
     startLoading,
     updateExperienceInfo,
+    updateEducationInfo,
+    onRemoveSkill
   };
 
 
