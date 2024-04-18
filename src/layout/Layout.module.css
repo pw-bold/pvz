@@ -23,6 +23,7 @@
 
 .activeStep {
   color: #0E46A3;
+  text-decoration: underline;
 }
 
 .main {

@@ -25,6 +25,7 @@ interface AppContextType {
   updatePersonalInfo: (key: string, value: string) => void;
   updateExperienceInfo: (idx: number, key: string, value: string) => void;
   updateEducationInfo: (idx: number, key: string, value: string) => void;
+  onRemoveSkill: (type: 'languages' | 'skills', skill: string) => void;
 }
 
 const defaultState: AppContextType = {
@@ -62,8 +63,9 @@ const defaultState: AppContextType = {
   updateStep: () => { },
   updatePersonalInfo: () => { },
   startLoading: () => { },
-  updateExperienceInfo: () => {},
-  updateEducationInfo: () => {}
+  updateExperienceInfo: () => { },
+  updateEducationInfo: () => { },
+  onRemoveSkill: () => {},
 }
 
 const AppContext = createContext(defaultState);
@@ -126,6 +128,20 @@ export const AppContextProvider = ({ children }) => {
     }))
   }
 
+  const onRemoveSkill = (type: 'languages' | 'skills', skill: string) => {
+    setUserData((prevState) => {
+      const newState = {
+        ...prevState,
+        person: {
+          ...prevState.person,
+          [type]: prevState.person[type].filter(item => item !== skill)
+        }
+      }
+      return newState;
+    }
+    )
+  }
+
   const startLoading = () => setLoading(true);
 
   const contextValue: AppContextType = {
@@ -137,7 +153,8 @@ export const AppContextProvider = ({ children }) => {
     updatePersonalInfo,
     startLoading,
     updateExperienceInfo,
-    updateEducationInfo
+    updateEducationInfo,
+    onRemoveSkill
   };
 
 
