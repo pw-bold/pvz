@@ -9,7 +9,7 @@ const Menu = () => {
   const steps: Steps[] = [Steps.Welcome, Steps.Heading, Steps.Experience, Steps.Education, Steps.Skills, Steps.Summary];
   return <nav className={styles.menu}>
     <div style={{ height: '5rem'}}>
-      <img src='public/resumenow.png' style={{width: 'fit-content', height: '100%'}}/>
+      <img src='/resumenow.png' style={{width: 'fit-content', height: '100%'}}/>
     </div>
     <ul>
       {steps.map(step => {
