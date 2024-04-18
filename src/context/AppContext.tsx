@@ -44,8 +44,6 @@ interface AppContextType {
   updateStep: (step: Steps) => void
 }
 
-
-
 const defaultState: AppContextType = {
   step: Steps.Welcome,
   fetchedPersonData: null,
