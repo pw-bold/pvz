@@ -14,9 +14,9 @@ const Menu = () => {
     <ul>
       {steps.map(step => {
         if (step === Steps.Welcome) {
-          return <Button style={{marginBottom: '2rem'}} onClick={() => updateStep(Steps.Welcome)} size='large' variant='outlined' color='primary'>Return Home</Button>
+          return <Button key={step} style={{marginBottom: '2rem'}} onClick={() => updateStep(Steps.Welcome)} size='large' variant='outlined' color='primary'>Return Home</Button>
         } else {
-          return <li className={`${step === currentStep ? styles.activeStep : ''} ${styles.step}`} key={step}>{step}</li>
+          return <li key={step} className={`${step === currentStep ? styles.activeStep : ''} ${styles.step}`}>{step}</li>
         }
       })}
     </ul>
