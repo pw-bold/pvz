@@ -4,10 +4,10 @@ import { useContext } from 'react';
 import AppContext, { Steps } from '../../context/AppContext';
 
 function Heading({ }) {
-  const { fetchedPersonData, updateStep } = useContext(AppContext);
+  const { fetchedPersonData, updateStep, updatePersonalInfo } = useContext(AppContext);
   const { person } = fetchedPersonData;
 
-  console.log(person);
+  console.log(fetchedPersonData);
 
   const [city, , country] = person.location.split(',');
 
@@ -15,6 +15,9 @@ function Heading({ }) {
     updateStep(Steps.Experience);
   }
 
+  const onChangeHandler = (key, value) => {
+    updatePersonalInfo(key, value);
+  }
 
   return <div className={styles.headingWrapper}>
     <div className={styles.heading}>
@@ -22,21 +25,24 @@ function Heading({ }) {
       <p>We suggest including an email and phone number.</p>
     </div>
     <div className={styles.contentWrapper}>
-      <div className={styles.imageWrapper}>
-        <img src={person.photoUrl || 'public/placeholder_image.jpeg'} />
+      <div>
+        <div className={styles.imageWrapper}>
+          <img src={person.photoUrl || '/placeholder_image.jpeg'} />
+        </div>
+        <Button size='small' variant='outlined'>Upload a new photo</Button>
       </div>
       <form className={styles.form}>
         <div className={styles.formEntry}>
-          <TextField label='First Name' name='firstName' fullWidth value={person.firstName} />
-          <TextField label='Last Name' name='lastName' fullWidth value={person.lastName} />
+          <TextField label='First Name' name='firstName' fullWidth value={person.firstName} onChange={(e) => onChangeHandler(e.target.name, e.target.value)} />
+          <TextField label='Last Name' name='lastName' fullWidth value={person.lastName} onChange={(e) => onChangeHandler(e.target.name, e.target.value)} />
         </div>
         <div className={styles.formEntry}>
           <TextField label='City' name='location_city' fullWidth value={city} />
           <TextField label='Country' name='location_country' fullWidth value={country} />
         </div>
         <div className={styles.formEntry}>
-          <TextField type='number' label='Phone Number' name='location_country' fullWidth />
-          <TextField type='email' label='Email' value={person.linkedInUrl} required fullWidth />
+          <TextField type='number' label='Phone Number' name='phone' fullWidth onChange={(e) => onChangeHandler(e.target.name, e.target.value)} />
+          <TextField type='email' label='Email' name='linkedInUrl' value={person.linkedInUrl} required fullWidth onChange={(e) => onChangeHandler(e.target.name, e.target.value)} />
         </div>
       </form>
     </div>

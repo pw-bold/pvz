@@ -9,22 +9,27 @@ const MONTHS = [
 ];
 
 function Experience({ }) {
-  const { fetchedPersonData, updateStep } = useContext(AppContext);
+  const { fetchedPersonData, updateStep, updateExperienceInfo } = useContext(AppContext);
   const { person } = fetchedPersonData;
 
   const { positionHistory } = fetchedPersonData.person.positions;
 
   console.log(person);
 
+
+  const onChangeHandler = (idx, key, value) => {
+    updateExperienceInfo(idx, key, value)
+  }
+
   const onImproveHandler = () => {
     // TODO: add
+    // you can now use onChangeHandler
   }
 
 
   const onSaveHandler = () => {
     updateStep(Steps.Education);
   }
-
 
   return <div className={styles.headingWrapper}>
     <div className={styles.heading}>
@@ -33,16 +38,24 @@ function Experience({ }) {
     </div>
     <div className={styles.contentWrapper}>
 
-      {positionHistory.map(position => (
-        <form className={styles.form}>
+      {positionHistory.map((position, idx) => (
+        <form className={styles.form} key={idx}>
           <div className={styles.formEntry}>
-            <TextField label='Job Title' name='firstName' fullWidth value={position.title} />
-            <TextField label='Employer' name='lastName' fullWidth value={position.companyName} />
+            <TextField label='Job Title' name='title' fullWidth value={position.title}
+              onChange={(e) => onChangeHandler(idx, e.target.name, e.target.value)}
+            />
+            <TextField label='Employer' name='companyName' fullWidth value={position.companyName}
+              onChange={(e) => onChangeHandler(idx, e.target.name, e.target.value)}
+            />
           </div>
           <div className={styles.formEntry}>
-            <TextField label='Location' name='location_city' value={[position.companyLocation]} fullWidth/>
+            <TextField label='Location' name='companyLocation' value={[position.companyLocation]} fullWidth
+              onChange={(e) => onChangeHandler(idx, e.target.name, e.target.value)}
+            />
           </div>
-          <TextField multiline type='text' label='Description' name='description' value={[position.description]}/>
+          <TextField multiline type='text' label='Description' name='description' value={[position.description]}
+            onChange={(e) => onChangeHandler(idx, e.target.name, e.target.value)}
+          />
           <Button color='success' style={{ alignSelf: 'flex-end' }} variant='contained' onClick={() => onImproveHandler()}>Improve with AI 🪄🪄🪄</Button>
           <div className={styles.formEntry}>
             <TextField type='number' placeholder='Year' label='Start Date' name='location_country' value={position.startEndDate.start.year} />
@@ -51,7 +64,7 @@ function Experience({ }) {
             <TextField type='text' placeholder='Month' value={MONTHS[position.startEndDate.end?.month - 1]} disabled={!position.startEndDate.end} />
           </div>
           <p>I currently work here</p>
-          <Checkbox checked={!position.startEndDate.end} style={{alignSelf: 'flex-start'}}/>
+          <Checkbox checked={!position.startEndDate.end} style={{ alignSelf: 'flex-start' }} />
         </form>
       ))}
     </div>

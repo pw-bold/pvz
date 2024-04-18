@@ -1,50 +1,29 @@
 
-import { createContext, useReducer, useState } from "react";
-import getLinkedinProfile from "../utils/getLinkedinProfile";
+import { createContext, useState } from "react";
+import getLinkedinProfile, { GeneralData } from "../utils/getLinkedinProfile";
 
 import { mockedData } from "../mock/mockedData";
 
 export enum Steps {
-  Welcome,
-  Templates,
-  Start, // optional droprdown
-  Heading,
-  Experience,
-  Education,
-  Skills,
-  Summary,
-  Final
-}
-
-interface AppData {
-  user: {
-    personalInfo: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      city: string;
-      country: string;
-      phone: number;
-    }
-    experience: {
-      jobTitle: string;
-      employer: string;
-      startDate: Date;
-      endDate: Date;
-      description: string;
-      city?: string;
-      isCurrent: boolean;
-    }
-  }
-  //...
+  Welcome = 'Welcome',
+  Templates = 'Templates',
+  Start = 'Start', // optional droprdown
+  Heading = 'Heading',
+  Experience = 'Experience',
+  Education = 'Education',
+  Skills = 'Skills',
+  Summary = 'Summary',
 }
 
 interface AppContextType {
   step: Steps;
-  fetchedPersonData: object | null;
-  // appData: AppData;
+  fetchedPersonData: GeneralData | null;
+  isLoading: boolean;
+  startLoading: () => void;
   updateStateWithFetchedData: (url: string) => void;
-  updateStep: (step: Steps) => void
+  updateStep: (step: Steps) => void;
+  updatePersonalInfo: (key: string, value: string) => void;
+  updateExperienceInfo(idx: number, key: string, value: string)
 }
 
 const defaultState: AppContextType = {
@@ -76,35 +55,13 @@ const defaultState: AppContextType = {
       "languages": [],
       "linkedInUrl": ""
     },
-    "company": {
-      "websiteUrl": "",
-      "name": "",
-      "logo": "",
-      "employeeCount": 0,
-      "description": "",
-      "tagline": "",
-      "specialities": [],
-      "headquarter": {
-        "country": "",
-        "geographicArea": null,
-        "city": "",
-        "postalCode": null
-      },
-      "foundedOn": {
-        "year": 0
-      },
-      "industry": "",
-      "universalName": "",
-      "linkedInUrl": "",
-      "linkedInId": "",
-      "linkedinUrl": "",
-      "linkedinId": ""
-    },
-    "credits_left": 0,
-    "rate_limit_left": 0
   },
-  updateStateWithFetchedData: () => {},
-  updateStep: () => {}
+  isLoading: false,
+  updateStateWithFetchedData: () => { },
+  updateStep: () => { },
+  updatePersonalInfo: () => { },
+  startLoading: () => { },
+  updateExperienceInfo: () => {},
 }
 
 const AppContext = createContext(defaultState);
@@ -112,17 +69,22 @@ const AppContext = createContext(defaultState);
 
 export const AppContextProvider = ({ children }) => {
   const [step, setStep] = useState<Steps>(Steps.Welcome);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<GeneralData>(defaultState.fetchedPersonData);
+  const [loading, setLoading] = useState(false);
 
 
   const updateStateWithFetchedData = async (url) => {
     try {
       const response = await getLinkedinProfile(url);
+      setLoading(true);
       console.log('response:', response.profile);
-      setUserData(response.profile); // Update context with fetched data
-
+      // setUserData(response.profile); // Update context with fetched data
+      setUserData(mockedData);
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error);
+      setLoading(false);
+      setStep(Steps.Welcome)
     }
 
   }
@@ -131,14 +93,37 @@ export const AppContextProvider = ({ children }) => {
     setStep(step);
   }
 
-  const contextValue = {
+  const updatePersonalInfo = (key: string, value: string) => {
+    setUserData((prevState) => ({ ...prevState, person: { ...prevState.person, [key]: value } }))
+  }
+
+  const updateExperienceInfo = (idx, key: string, value: string) => {
+    setUserData((prevState) => ({
+      ...prevState,
+      person: {
+        ...prevState.person,
+        positions: {
+          ...prevState.person.positions,
+          positionHistory: prevState.person.positions.positionHistory.map((it, i) => idx === i ? ({ ...it, [key]: value }) : it)
+        }
+      }
+    }))
+  }
+
+  const startLoading = () => setLoading(true);
+
+  const contextValue: AppContextType = {
     step: step,
     fetchedPersonData: userData,
+    isLoading: loading,
     updateStateWithFetchedData,
     updateStep,
+    updatePersonalInfo,
+    startLoading,
+    updateExperienceInfo,
   };
 
-  
+
   return (
     <AppContext.Provider value={contextValue}>
       {children}
