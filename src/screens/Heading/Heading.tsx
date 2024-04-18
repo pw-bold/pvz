@@ -7,7 +7,7 @@ function Heading({ }) {
   const { fetchedPersonData, updateStep } = useContext(AppContext);
   const { person } = fetchedPersonData;
 
-  console.log(person);
+  console.log(fetchedPersonData);
 
   const [city, , country] = person.location.split(',');
 
@@ -31,11 +31,11 @@ function Heading({ }) {
           <TextField label='Last Name' name='lastName' fullWidth value={person.lastName} />
         </div>
         <div className={styles.formEntry}>
-          <TextField label='City' name='location_city' fullWidth value={city} />
-          <TextField label='Country' name='location_country' fullWidth value={country} />
+          <TextField label='City' name='location_city' fullWidth value={city} disabled />
+          <TextField label='Country' name='location_country' fullWidth value={country} disabled />
         </div>
         <div className={styles.formEntry}>
-          <TextField type='number' label='Phone Number' name='location_country' fullWidth />
+          <TextField type='number' label='Phone Number' name='phone' fullWidth />
           <TextField type='email' label='Email' value={person.linkedInUrl} required fullWidth />
         </div>
       </form>

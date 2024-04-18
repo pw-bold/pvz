@@ -10,18 +10,21 @@ const OPTIONS = [
     description: 'Get step-by-step support with CV structure and expert content',
     buttonLabel: 'Create new',
     choice: 'new',
+    image: 'public/newresume.png'
   },
   {
     title: 'Upload existing resume',
     description: 'Edit your resume for fresh design and grammar-check',
     buttonLabel: 'Choose file',
-    choice: 'upload'
+    choice: 'upload',
+    image: 'public/existing resume.png'
   },
   {
     title: 'Connect with LinkedIn',
     description: 'Save time on data entry to focus on the professional layout.',
     buttonLabel: 'Import data',
-    choice: 'linkedin'
+    choice: 'linkedin',
+    image: 'public/LinkedIn_icon.svg (1).png'
   },
 ];
 
@@ -87,6 +90,9 @@ function StartScreen({ }) {
         p={3}
         sx={{ border: '2px solid grey', borderRadius: '1rem', flexDirection: 'column', justifyContent: 'space-evenly' }}
       >
+        <div style={{ width: '5rem'}}>
+          <img src={option.image} style={{width: '100%'}}/>
+        </div>
         <h3>{option.title}</h3>
         <p>{option.description}</p>
         <Button variant="outlined" onClick={() => onClickHandler(option.choice)}>{option.buttonLabel}</Button>

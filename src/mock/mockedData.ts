@@ -80,7 +80,7 @@ interface Company {
   linkedInId: string;
 }
 
-interface MockedData {
+export interface UserData {
   success: boolean;
   person: Person;
   company: Company;
@@ -88,7 +88,7 @@ interface MockedData {
   rate_limit_left: number;
 }
 
-export const mockedData: MockedData = {
+export const mockedData: UserData = {
   "success": true,
   "person": {
     "publicIdentifier": "viktoriia-holovko-670115160",
@@ -271,8 +271,6 @@ export const mockedData: MockedData = {
     "universalName": "boldlimited",
     "linkedInUrl": "https://www.linkedin.com/company/boldlimited/",
     "linkedInId": "10490165",
-    "linkedinUrl": "https://www.linkedin.com/company/boldlimited/",
-    "linkedinId": "10490165"
   },
   "credits_left": 48,
   "rate_limit_left": 49
