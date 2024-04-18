@@ -1,10 +1,10 @@
 import { Button, TextField } from '@mui/material';
 import styles from './Heading.module.css';
 import { useContext } from 'react';
-import AppContext from '../../context/AppContext';
+import AppContext, { Steps } from '../../context/AppContext';
 
 function Heading({ }) {
-  const { fetchedPersonData } = useContext(AppContext);
+  const { fetchedPersonData, updateStep } = useContext(AppContext);
   const { person } = fetchedPersonData;
 
   console.log(person);
@@ -12,7 +12,7 @@ function Heading({ }) {
   const [city, , country] = person.location.split(',');
 
   const onSaveHandler = () => {
-    // todo
+    updateStep(Steps.Experience);
   }
 
 
@@ -23,7 +23,7 @@ function Heading({ }) {
     </div>
     <div className={styles.contentWrapper}>
       <div className={styles.imageWrapper}>
-        <img src={person.photoUrl && 'public/placeholder_image.jpeg'} />
+        <img src={person.photoUrl || 'public/placeholder_image.jpeg'} />
       </div>
       <form className={styles.form}>
         <div className={styles.formEntry}>
@@ -40,7 +40,7 @@ function Heading({ }) {
         </div>
       </form>
     </div>
-      <Button variant='contained' color='secondary' style={{alignSelf: 'flex-end'}} onClick={onSaveHandler}>Save and Next</Button>
+    <Button variant='contained' color='secondary' style={{ alignSelf: 'flex-end' }} onClick={onSaveHandler}>Save and Next</Button>
   </div>
 }
 

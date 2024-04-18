@@ -5,6 +5,7 @@ import StartScreen from "./screens/StartScreen/StartScreen";
 import styles from './App.module.css';
 import { Container } from "@mui/material";
 import Heading from "./screens/Heading/Heading";
+import Experience from "./screens/Expierience/Experience";
 
 function App({ }) {
   const { step, setStep } = useContext(AppContext);
@@ -12,6 +13,7 @@ function App({ }) {
   return <Container maxWidth='lg' className={styles.mainContainer}>
     {step === Steps.Welcome && <StartScreen />}
     {step === Steps.Heading && <Heading /> }
+    {step === Steps.Experience && <Experience />}
     
     {/* <button onClick={() => updateStateWithFetchedData('url')}>Fetch</button>
 
