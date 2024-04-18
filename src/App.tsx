@@ -15,16 +15,11 @@ function App({ }) {
 
   return <Container maxWidth='lg' className={styles.mainContainer}>
     {step === Steps.Welcome && <StartScreen />}
-    {step === Steps.Heading && <Heading /> }
+    {step === Steps.Heading && <Heading />}
     {step === Steps.Experience && <Experience />}
     {step === Steps.Education && <Education />}
     {step === Steps.Skills && <Skills />}
     {step === Steps.Summary && <Summary />}
-    
-    {/* <button onClick={() => updateStateWithFetchedData('url')}>Fetch</button>
-
-    {fetchedPersonData && <p>{JSON.stringify(fetchedPersonData)}</p>} */}
-
   </Container>
 }
 
