@@ -2,7 +2,7 @@
 import { createContext, useState } from "react";
 import getLinkedinProfile, { GeneralData } from "../utils/getLinkedinProfile";
 
-import { UserData, mockedData } from "../mock/mockedData";
+import { mockedData } from "../mock/mockedData";
 
 export enum Steps {
   Welcome = 'Welcome',
@@ -18,9 +18,11 @@ export enum Steps {
 interface AppContextType {
   step: Steps;
   fetchedPersonData: GeneralData | null;
-  // appData: AppData;
+  isLoading: boolean;
+  startLoading: () => void;
   updateStateWithFetchedData: (url: string) => void;
-  updateStep: (step: Steps) => void
+  updateStep: (step: Steps) => void;
+  updatePersonalInfo: (key: string, value: string) => void;
 }
 
 const defaultState: AppContextType = {
@@ -52,33 +54,12 @@ const defaultState: AppContextType = {
       "languages": [],
       "linkedInUrl": ""
     },
-    "company": {
-      "websiteUrl": "",
-      "name": "",
-      "logo": "",
-      "employeeCount": 0,
-      "description": "",
-      "tagline": "",
-      "specialities": [],
-      "headquarter": {
-        "country": "",
-        "geographicArea": null,
-        "city": "",
-        "postalCode": null
-      },
-      "foundedOn": {
-        "year": 0
-      },
-      "industry": "",
-      "universalName": "",
-      "linkedInUrl": "",
-      "linkedInId": "",
-    },
-    "credits_left": 0,
-    "rate_limit_left": 0
   },
-  updateStateWithFetchedData: () => {},
-  updateStep: () => {}
+  isLoading: false,
+  updateStateWithFetchedData: () => { },
+  updateStep: () => { },
+  updatePersonalInfo: () => { },
+  startLoading: () => { },
 }
 
 const AppContext = createContext(defaultState);
@@ -87,16 +68,21 @@ const AppContext = createContext(defaultState);
 export const AppContextProvider = ({ children }) => {
   const [step, setStep] = useState<Steps>(Steps.Welcome);
   const [userData, setUserData] = useState<GeneralData>(defaultState.fetchedPersonData);
+  const [loading, setLoading] = useState(false);
 
 
   const updateStateWithFetchedData = async (url) => {
     try {
       const response = await getLinkedinProfile(url);
+      setLoading(true);
       console.log('response:', response.profile);
-      setUserData(response.profile);; // Update context with fetched data
-
+      // setUserData(response.profile); // Update context with fetched data
+      setUserData(mockedData);
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error);
+      setLoading(false);
+      setStep(Steps.Welcome)
     }
 
   }
@@ -105,14 +91,23 @@ export const AppContextProvider = ({ children }) => {
     setStep(step);
   }
 
+  const updatePersonalInfo = (key: string, value: string) => {
+    setUserData((prevState) => ({ ...prevState, person: { ...prevState.person, [key]: value } }))
+  }
+
+  const startLoading = () => setLoading(true);
+
   const contextValue: AppContextType = {
     step: step,
     fetchedPersonData: userData,
+    isLoading: loading,
     updateStateWithFetchedData,
     updateStep,
+    updatePersonalInfo,
+    startLoading,
   };
 
-  
+
   return (
     <AppContext.Provider value={contextValue}>
       {children}

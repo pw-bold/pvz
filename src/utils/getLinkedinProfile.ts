@@ -6,6 +6,7 @@
 interface LinkedInProfile {
   publicIdentifier: string;
   linkedInIdentifier: string;
+  linkedInUrl: string;
   firstName: string;
   lastName: string;
   headline: string;
@@ -13,9 +14,10 @@ interface LinkedInProfile {
   photoUrl: string;
   creationDate: {
     year: number;
+    month?: number;
   };
-  followerCount: number;
-  connectionCount: number;
+  followerCount?: number;
+  connectionCount?: number;
   positions: any;
   schools: any;
   skills: string[];
@@ -24,8 +26,6 @@ interface LinkedInProfile {
 
 export interface GeneralData {
   success: boolean;
-  credits_left: number;
-  rate_limit_left: number;
   person: LinkedInProfile;
 }
 

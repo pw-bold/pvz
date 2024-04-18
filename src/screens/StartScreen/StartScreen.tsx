@@ -1,8 +1,9 @@
-import { Box, Button, Modal, TextField } from "@mui/material";
+import { Box, Button, Modal, Snackbar, TextField } from "@mui/material";
 
 import styles from './StartScreen.module.css';
 import { useContext, useState } from "react";
 import AppContext, { Steps } from "../../context/AppContext";
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 const OPTIONS = [
   {
@@ -44,25 +45,30 @@ const modalStyle = {
 
 function StartScreen({ }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false)
   const [userInput, setUserInput] = useState('');
 
-  const { updateStateWithFetchedData, updateStep } = useContext(AppContext);
+  const { updateStateWithFetchedData, updateStep, startLoading } = useContext(AppContext);
 
   const onClickHandler = (choice) => {
     if (choice === 'linkedin') {
-      // show popup
       setIsModalOpen(true);
     }
     if (choice === 'new') {
-      updateStep(Steps.Heading);
+      setShowToast(true);
     }
     if (choice === 'upload') {
-      return
+      setShowToast(true);
     }
+  }
+
+  const handleCloseToast = () => {
+    setShowToast(false);
   }
 
   const handleImport = () => {
     if (!userInput) return;
+    startLoading();
     updateStateWithFetchedData(userInput);
     updateStep(Steps.Heading);
   }
@@ -71,14 +77,19 @@ function StartScreen({ }) {
     <Modal open={isModalOpen}>
       <Box sx={{ ...modalStyle }}>
         <div className={styles.modal}>
-          <h2>Paste a link to your linkedIn profile</h2>
-          <TextField variant="outlined" onChange={(e) => setUserInput(e.target.value)} fullWidth />
+          <div style={{ width: '3rem' }}>
+            <img src='/LinkedIn_icon.svg (1).png' style={{ width: '100%' }} />
+          </div>
+          <h2>Paste a link to your LinkedIn profile</h2>
+          <TextField placeholder="e.g. 'https://www.linkedin.com/in/kasia-kowalska/'" variant="outlined" onChange={(e) => setUserInput(e.target.value)} fullWidth />
           <div className={styles.modalButtons}>
-            <Button variant='contained' onClick={handleImport}>Import my resume</Button>
-            <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+            <Button variant='contained' onClick={handleImport}>Import my resume <CloudDownloadIcon style={{ marginLeft: '.5rem' }} /></Button>
+            <Button variant="outlined" color="error" onClick={() => setIsModalOpen(false)}>Cancel</Button>
           </div>
         </div>
-      </Box></Modal>
+      </Box>
+    </Modal>
+
     <h1>How would you like to build your resume?</h1>
     <div className={styles.boxes}>
       {OPTIONS.map(option => <Box
@@ -90,8 +101,8 @@ function StartScreen({ }) {
         p={3}
         sx={{ border: '2px solid grey', borderRadius: '1rem', flexDirection: 'column', justifyContent: 'space-evenly' }}
       >
-        <div style={{ width: '5rem'}}>
-          <img src={option.image} style={{width: '100%'}}/>
+        <div style={{ width: '5rem' }}>
+          <img src={option.image} style={{ width: '100%' }} />
         </div>
         <h3>{option.title}</h3>
         <p>{option.description}</p>
@@ -99,6 +110,15 @@ function StartScreen({ }) {
       </Box>)}
 
     </div>
+    <Box sx={{ width: 500 }}>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        open={showToast}
+        onClose={handleCloseToast}
+        message="Hey! This is not the feature we worked on. Try importing with LinkedIn 😜"
+        autoHideDuration={5000}
+      />
+    </Box>
   </div>
 }
 
