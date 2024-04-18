@@ -23,6 +23,7 @@ interface AppContextType {
   updateStateWithFetchedData: (url: string) => void;
   updateStep: (step: Steps) => void;
   updatePersonalInfo: (key: string, value: string) => void;
+  updateExperienceInfo(idx: number, key: string, value: string)
 }
 
 const defaultState: AppContextType = {
@@ -60,6 +61,7 @@ const defaultState: AppContextType = {
   updateStep: () => { },
   updatePersonalInfo: () => { },
   startLoading: () => { },
+  updateExperienceInfo: () => {},
 }
 
 const AppContext = createContext(defaultState);
@@ -95,6 +97,19 @@ export const AppContextProvider = ({ children }) => {
     setUserData((prevState) => ({ ...prevState, person: { ...prevState.person, [key]: value } }))
   }
 
+  const updateExperienceInfo = (idx, key: string, value: string) => {
+    setUserData((prevState) => ({
+      ...prevState,
+      person: {
+        ...prevState.person,
+        positions: {
+          ...prevState.person.positions,
+          positionHistory: prevState.person.positions.positionHistory.map((it, i) => idx === i ? ({ ...it, [key]: value }) : it)
+        }
+      }
+    }))
+  }
+
   const startLoading = () => setLoading(true);
 
   const contextValue: AppContextType = {
@@ -105,6 +120,7 @@ export const AppContextProvider = ({ children }) => {
     updateStep,
     updatePersonalInfo,
     startLoading,
+    updateExperienceInfo,
   };
 
 
