@@ -10,9 +10,10 @@ import Heading from "./screens/Heading/Heading";
 import Experience from "./screens/Expierience/Experience";
 import Education from "./screens/Education/Education";
 import Skills from "./screens/Skills/Skills";
+import Summary from "./screens/Summary/Summary";
 
 function App({ }) {
-  const { step, setStep } = useContext(AppContext);
+  const { step } = useContext(AppContext);
 
   // useEffect(() => {
   //   const responseOfLI = getLinkedinProfile('https://www.linkedin.com/in/pawel-l-wisniewski/');
@@ -25,18 +26,11 @@ function App({ }) {
 
   return <Container maxWidth='lg' className={styles.mainContainer}>
     {step === Steps.Welcome && <StartScreen />}
-    {step === Steps.Heading && <Heading /> }
+    {step === Steps.Heading && <Heading />}
     {step === Steps.Experience && <Experience />}
     {step === Steps.Education && <Education />}
     {step === Steps.Skills && <Skills />}
-    
-    {/* <button onClick={() => updateStateWithFetchedData('url')}>Fetch</button>
-
-    {fetchedPersonData && <p>{JSON.stringify(fetchedPersonData)}</p>} 
-    
-    <div>{JSON.stringify(data)}</div>
-    */}
-
+    {step === Steps.Summary && <Summary />}
   </Container>
 }
 
