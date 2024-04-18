@@ -9,6 +9,7 @@ import { Container } from "@mui/material";
 import Heading from "./screens/Heading/Heading";
 import Experience from "./screens/Expierience/Experience";
 import Education from "./screens/Education/Education";
+import Skills from "./screens/Skills/Skills";
 
 function App({ }) {
   const { step, setStep } = useContext(AppContext);
@@ -27,6 +28,7 @@ function App({ }) {
     {step === Steps.Heading && <Heading /> }
     {step === Steps.Experience && <Experience />}
     {step === Steps.Education && <Education />}
+    {step === Steps.Skills && <Skills />}
     
     {/* <button onClick={() => updateStateWithFetchedData('url')}>Fetch</button>
 
