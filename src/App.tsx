@@ -8,6 +8,7 @@ import Heading from "./screens/Heading/Heading";
 import Experience from "./screens/Expierience/Experience";
 import Education from "./screens/Education/Education";
 import Skills from "./screens/Skills/Skills";
+import Summary from "./screens/Summary/Summary";
 
 function App({ }) {
   const { step, setStep } = useContext(AppContext);
@@ -18,6 +19,7 @@ function App({ }) {
     {step === Steps.Experience && <Experience />}
     {step === Steps.Education && <Education />}
     {step === Steps.Skills && <Skills />}
+    {step === Steps.Summary && <Summary />}
     
     {/* <button onClick={() => updateStateWithFetchedData('url')}>Fetch</button>
 
