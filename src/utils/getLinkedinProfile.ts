@@ -47,8 +47,7 @@ const getLinkedinProfile = async (linkedinUrl: string): Promise<UseLinkedinHookP
   }
 
   // todo: move this to .env file, maybe add two more keys just in case and method to switch between them if one returns error
-  const API_KEY = 'sk_live_6620f14c5158970618b448c4_key_nq2srhj76z';
-  // const API_KEY = '';
+  const API_KEY = 'sk_live_66216b455158970618b44bec_key_hof9v0jwpgh';
 
   try {
     const response = await fetch(`/api?apikey=${API_KEY}&linkedinUrl=${encodeURIComponent(linkedinUrl)}`, {

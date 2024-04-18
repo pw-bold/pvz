@@ -75,11 +75,11 @@ export const AppContextProvider = ({ children }) => {
 
   const updateStateWithFetchedData = async (url) => {
     try {
-      const response = await getLinkedinProfile(url);
+      // const response = await getLinkedinProfile(url);
       setLoading(true);
-      console.log('response:', response.profile);
+      // console.log('response:', response.profile);
       // setUserData(response.profile); // Update context with fetched data
-      setUserData(mockedData);
+      setUserData(mockedData); // mock data for now to avoid expensive api calls
       setLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error);
