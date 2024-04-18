@@ -1,6 +1,6 @@
 
 import { createContext, useState } from "react";
-import getLinkedinProfile from "../utils/getLinkedinProfile";
+import getLinkedinProfile, { GeneralData } from "../utils/getLinkedinProfile";
 
 import { UserData, mockedData } from "../mock/mockedData";
 
@@ -17,7 +17,7 @@ export enum Steps {
 
 interface AppContextType {
   step: Steps;
-  fetchedPersonData: UserData | null;
+  fetchedPersonData: GeneralData | null;
   // appData: AppData;
   updateStateWithFetchedData: (url: string) => void;
   updateStep: (step: Steps) => void
@@ -86,14 +86,14 @@ const AppContext = createContext(defaultState);
 
 export const AppContextProvider = ({ children }) => {
   const [step, setStep] = useState<Steps>(Steps.Welcome);
-  const [userData, setUserData] = useState(defaultState.fetchedPersonData);
+  const [userData, setUserData] = useState<GeneralData>(defaultState.fetchedPersonData);
 
 
   const updateStateWithFetchedData = async (url) => {
     try {
-      // const response = await getLinkedinProfile(url);
-      // console.log('response:', response.profile);
-      setUserData(mockedData); // Update context with fetched data
+      const response = await getLinkedinProfile(url);
+      console.log('response:', response.profile);
+      setUserData(response.profile);; // Update context with fetched data
 
     } catch (error) {
       console.error('Error fetching data:', error);

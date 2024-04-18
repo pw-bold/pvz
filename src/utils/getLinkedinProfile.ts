@@ -22,7 +22,7 @@ interface LinkedInProfile {
   languages: string[];
 }
 
-interface GeneralData {
+export interface GeneralData {
   success: boolean;
   credits_left: number;
   rate_limit_left: number;
@@ -47,7 +47,7 @@ const getLinkedinProfile = async (linkedinUrl: string): Promise<UseLinkedinHookP
   }
 
   // todo: move this to .env file, maybe add two more keys just in case and method to switch between them if one returns error
-  // const API_KEY = 'sk_live_6620f14c5158970618b448c4_key_nq2srhj76z';
+  const API_KEY = 'sk_live_6620f14c5158970618b448c4_key_nq2srhj76z';
   // const API_KEY = '';
 
   try {
