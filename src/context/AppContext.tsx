@@ -49,7 +49,60 @@ interface AppContextType {
 
 const defaultState: AppContextType = {
   step: Steps.Welcome,
-  fetchedPersonData: null,
+  fetchedPersonData: {
+    "success": false,
+    "person": {
+      "publicIdentifier": "",
+      "linkedInIdentifier": "",
+      "firstName": "",
+      "lastName": "",
+      "headline": "",
+      "location": "",
+      "photoUrl": "",
+      "positions": {
+        "positionsCount": 0,
+        "positionHistory": []
+      },
+      "creationDate": {
+        "month": 0,
+        "year": 0
+      },
+      "followerCount": 0,
+      "schools": {
+        "educationsCount": 0,
+        "educationHistory": []
+      },
+      "skills": [],
+      "languages": [],
+      "linkedInUrl": ""
+    },
+    "company": {
+      "websiteUrl": "",
+      "name": "",
+      "logo": "",
+      "employeeCount": 0,
+      "description": "",
+      "tagline": "",
+      "specialities": [],
+      "headquarter": {
+        "country": "",
+        "geographicArea": null,
+        "city": "",
+        "postalCode": null
+      },
+      "foundedOn": {
+        "year": 0
+      },
+      "industry": "",
+      "universalName": "",
+      "linkedInUrl": "",
+      "linkedInId": "",
+      "linkedinUrl": "",
+      "linkedinId": ""
+    },
+    "credits_left": 0,
+    "rate_limit_left": 0
+  },
   updateStateWithFetchedData: () => {},
   updateStep: () => {}
 }
