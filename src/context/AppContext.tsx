@@ -23,7 +23,8 @@ interface AppContextType {
   updateStateWithFetchedData: (url: string) => void;
   updateStep: (step: Steps) => void;
   updatePersonalInfo: (key: string, value: string) => void;
-  updateExperienceInfo(idx: number, key: string, value: string)
+  updateExperienceInfo: (idx: number, key: string, value: string) => void;
+  updateEducationInfo: (idx: number, key: string, value: string) => void;
 }
 
 const defaultState: AppContextType = {
@@ -62,6 +63,7 @@ const defaultState: AppContextType = {
   updatePersonalInfo: () => { },
   startLoading: () => { },
   updateExperienceInfo: () => {},
+  updateEducationInfo: () => {}
 }
 
 const AppContext = createContext(defaultState);
@@ -75,9 +77,10 @@ export const AppContextProvider = ({ children }) => {
 
   const updateStateWithFetchedData = async (url) => {
     try {
-      const response = await getLinkedinProfile(url);
+      // const response = await getLinkedinProfile(url);
       setLoading(true);
-      console.log('response:', response.profile);
+      // console.log('response:', response.profile);
+      // UNCOMMENT later
       // setUserData(response.profile); // Update context with fetched data
       setUserData(mockedData);
       setLoading(false)
@@ -97,7 +100,7 @@ export const AppContextProvider = ({ children }) => {
     setUserData((prevState) => ({ ...prevState, person: { ...prevState.person, [key]: value } }))
   }
 
-  const updateExperienceInfo = (idx, key: string, value: string) => {
+  const updateExperienceInfo = (idx: number, key: string, value: string) => {
     setUserData((prevState) => ({
       ...prevState,
       person: {
@@ -105,6 +108,19 @@ export const AppContextProvider = ({ children }) => {
         positions: {
           ...prevState.person.positions,
           positionHistory: prevState.person.positions.positionHistory.map((it, i) => idx === i ? ({ ...it, [key]: value }) : it)
+        }
+      }
+    }))
+  }
+
+  const updateEducationInfo = (idx: number, key: string, value: string) => {
+    setUserData((prevState) => ({
+      ...prevState,
+      person: {
+        ...prevState.person,
+        schools: {
+          ...prevState.person.schools,
+          educationHistory: prevState.person.positions.educationHistory.map((it, i) => idx === i ? ({ ...it, [key]: value }) : it)
         }
       }
     }))
@@ -121,6 +137,7 @@ export const AppContextProvider = ({ children }) => {
     updatePersonalInfo,
     startLoading,
     updateExperienceInfo,
+    updateEducationInfo
   };
 
 

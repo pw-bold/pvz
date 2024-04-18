@@ -10,12 +10,8 @@ const MONTHS = [
 
 function Experience({ }) {
   const { fetchedPersonData, updateStep, updateExperienceInfo } = useContext(AppContext);
-  const { person } = fetchedPersonData;
 
   const { positionHistory } = fetchedPersonData.person.positions;
-
-  console.log(person);
-
 
   const onChangeHandler = (idx, key, value) => {
     updateExperienceInfo(idx, key, value)
