@@ -1,6 +1,7 @@
 import useLinkedin from './hooks/useLinkedin';
 import { Avatar, Card, CardContent, Typography, CircularProgress, List, ListItem, ListItemText } from '@mui/material';
 
+
 // just for testing (obviously) if the hook works
 const LinkedInProfileComponent: React.FC = () => {
   const { profile, loading, error } = useLinkedin(''); // full linkedin url
