@@ -122,7 +122,7 @@ export const AppContextProvider = ({ children }) => {
         ...prevState.person,
         schools: {
           ...prevState.person.schools,
-          educationHistory: prevState.person.positions.educationHistory.map((it, i) => idx === i ? ({ ...it, [key]: value }) : it)
+          educationHistory: prevState.person.schools.educationHistory.map((it, i) => idx === i ? ({ ...it, [key]: value }) : it)
         }
       }
     }))

@@ -1,0 +1,59 @@
+.cv {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.personalInfo {
+  display: flex;
+  align-items: center;
+}
+
+.photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.contact a {
+  text-decoration: none;
+  color: blue;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.position, .education {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.position:hover, .education:hover {
+  background-color: #f0f0f0;
+}
+
+.companyLogo img, .schoolLogo img {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+.skills, .languages {
+  margin-left: 20px;
+}
+
+.skills li, .languages li {
+  margin-bottom: 5px;
+}
