@@ -23,7 +23,11 @@ function Experience({ }) {
     updateExperienceInfo(idx, key, value)
   }
 
+  const { data, loading, error, fetchData } = useOpenAI();
+
   const onImproveHandler = (idx: number) => {
+    const experience = JSON.stringify(positionHistory[idx]);
+    fetchData(experience);
     setSelectedExperienceIndex(idx);
   };
 
@@ -31,12 +35,6 @@ function Experience({ }) {
   const onSaveHandler = () => {
     updateStep(Steps.Education);
   }
-
-  const { data, loading, error } = useOpenAI(
-    selectedExperienceIndex !== null
-      ? JSON.stringify(positionHistory[selectedExperienceIndex])
-      : ''
-  );
 
   useEffect(() => {
     if (data && data.choices && data.choices.length > 0) {
