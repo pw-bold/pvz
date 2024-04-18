@@ -1,4 +1,5 @@
 import { createContext, useReducer, useState } from "react";
+import getLinkedinProfile from "../utils/getLinkedinProfile";
 import { mockedData } from "../mock/mockedData";
 
 export enum Steps {
@@ -58,15 +59,15 @@ export const AppContextProvider = ({ children }) => {
   const [step, setStep] = useState<Steps>(Steps.Welcome);
   const [userData, setUserData] = useState(null);
 
-  const updateStateWithFetchedData = async(url) => {
-    // try {
-    //   const response = await fetch('your-api-url');
-    //   const data = await response.json();
-    //   setData(data); // Update context with fetched data
-    // } catch (error) {
-    //   console.error('Error fetching data:', error);
-    // }
-    setUserData(mockedData);
+  const updateStateWithFetchedData = async (url) => {
+    try {
+      const response = await getLinkedinProfile(url);
+      console.log('response:', response.profile);
+      setUserData(response.profile); // Update context with fetched data
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 
   const updateStep = (step: Steps) => {
