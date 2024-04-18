@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { mockedData } from '../mock/mockedData';
 
 /**
  * @hook useLinkedin
@@ -31,14 +32,14 @@ interface GeneralData {
   person: LinkedInProfile;
 }
 
-interface UseLinkedinHookProps {
+interface UseLinkedinHookRes {
   profile: GeneralData | null;
   loading: boolean;
   error: string | null;
+  fetchData: (url) => void;
 }
 
-const useLinkedin = (linkedinUrl: string): UseLinkedinHookProps => {
-  const [profile, setProfile] = useState<GeneralData | null>(null);
+const useLinkedin = (updateStateFunction): UseLinkedinHookRes => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,35 +47,32 @@ const useLinkedin = (linkedinUrl: string): UseLinkedinHookProps => {
   // const API_KEY = 'sk_live_6620f14c5158970618b448c4_key_nq2srhj76z';
   const API_KEY = '';
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!linkedinUrl) return;
+  async function fetchData(linkedinUrl: string) {
+    console.log('TEST')
+    if (!linkedinUrl) return;
+    setLoading(true);
+    setError(null);
 
-      setLoading(true);
-      setError(null);
+    try {
+      const response = await fetch(`/api?apikey=${API_KEY}&linkedinUrl=${encodeURIComponent(linkedinUrl)}`, {
+        method: 'GET'
+      });
 
-      try {
-        const response = await fetch(`/api?apikey=${API_KEY}&linkedinUrl=${encodeURIComponent(linkedinUrl)}`, {
-          method: 'GET'
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch data: ${response.statusText}`);
-        }
-
-        const data = await response.json() as GeneralData;
-        setProfile(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.statusText}`);
       }
-    };
 
-    fetchProfile();
-  }, [linkedinUrl]);
+      // const data = await response.json() as GeneralData;
+      const data = mockedData;
+      updateStateFunction(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return { profile, loading, error };
+  return { fetchData, loading, error };
 };
 
 export default useLinkedin;

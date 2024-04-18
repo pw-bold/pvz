@@ -1,7 +1,7 @@
 import { createContext, useReducer, useState } from "react";
-import { data } from "../mock/mockedData";
+import { mockedData } from "../mock/mockedData";
 
-enum Steps {
+export enum Steps {
   Welcome,
   Templates,
   Start, // optional droprdown
@@ -36,36 +36,58 @@ interface AppData {
   //...
 }
 
-interface AppContext {
-  step: Steps,
+interface AppContextType {
+  step: Steps;
   fetchedPersonData: object | null;
-  appData: AppData;
+  // appData: AppData;
+  updateStateWithFetchedData: (url: string) => void;
+  updateStep: (step: Steps) => void
 }
 
-const defaultState = {
+
+
+const defaultState: AppContextType = {
   step: Steps.Welcome,
-  fetchedPersonData: data,
-
+  fetchedPersonData: null,
+  updateStateWithFetchedData: () => {},
+  updateStep: () => {}
 }
-
-// function appReducer(state, action) {
-//   switch(action) {
-//     case 'UPDATE_APP_DATA': {
-
-//     }
-//   }
-// }
 
 const AppContext = createContext(defaultState);
 
 
 export const AppContextProvider = ({ children }) => {
-  // const [appState, dispatch] = useReducer(appReducer, defaultState);
+  const [step, setStep] = useState<Steps>(Steps.Welcome);
+  const [userData, setUserData] = useState(null);
 
+  const updateStateWithFetchedData = async(url) => {
+    // try {
+    //   const response = await fetch('your-api-url');
+    //   const data = await response.json();
+    //   setData(data); // Update context with fetched data
+    // } catch (error) {
+    //   console.error('Error fetching data:', error);
+    // }
+    setUserData(mockedData);
+  }
+
+  const updateStep = (step: Steps) => {
+    setStep(step);
+  }
+
+  const contextValue = {
+    step: step,
+    fetchedPersonData: userData,
+    updateStateWithFetchedData,
+    updateStep,
+  };
+
+  
   return (
-    <AppContext.Provider value={defaultState}>
+    <AppContext.Provider value={contextValue}>
       {children}
     </AppContext.Provider>
   );
 }
 
+export default AppContext;
