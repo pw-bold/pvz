@@ -1,8 +1,7 @@
 import { createContext, useReducer, useState } from "react";
-import useLinkedin from "../hooks/useLinkedin";
 import { mockedData } from "../mock/mockedData";
 
-enum Steps {
+export enum Steps {
   Welcome,
   Templates,
   Start, // optional droprdown
@@ -40,22 +39,25 @@ interface AppData {
 interface AppContextType {
   step: Steps;
   fetchedPersonData: object | null;
-  appData: AppData;
-  updateStateWithFetchedData: () => object;
+  // appData: AppData;
+  updateStateWithFetchedData: (url: string) => void;
+  updateStep: (step: Steps) => void
 }
 
 
 
-const defaultState = {
+const defaultState: AppContextType = {
   step: Steps.Welcome,
   fetchedPersonData: null,
-  updateStateWithFetchedData: (url) => {},
+  updateStateWithFetchedData: () => {},
+  updateStep: () => {}
 }
 
 const AppContext = createContext(defaultState);
 
 
 export const AppContextProvider = ({ children }) => {
+  const [step, setStep] = useState<Steps>(Steps.Welcome);
   const [userData, setUserData] = useState(null);
 
   const updateStateWithFetchedData = async(url) => {
@@ -69,10 +71,15 @@ export const AppContextProvider = ({ children }) => {
     setUserData(mockedData);
   }
 
+  const updateStep = (step: Steps) => {
+    setStep(step);
+  }
+
   const contextValue = {
-    step: Steps.Welcome,
+    step: step,
     fetchedPersonData: userData,
     updateStateWithFetchedData,
+    updateStep,
   };
 
   
