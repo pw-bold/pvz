@@ -1,38 +1,21 @@
-import useLinkedin from './hooks/useLinkedin';
-import { Avatar, Card, CardContent, Typography, CircularProgress, List, ListItem, ListItemText } from '@mui/material';
+import { useContext } from "react"
+import AppContext, { Steps } from "./context/AppContext"
+import StartScreen from "./screens/StartScreen";
 
+import styles from './App.module.css';
+import { Container } from "@mui/material";
 
-// just for testing (obviously) if the hook works
-const LinkedInProfileComponent: React.FC = () => {
-  const { profile, loading, error } = useLinkedin(''); // full linkedin url
+function App({ }) {
+  const { step, setStep } = useContext(AppContext);
 
-  if (loading) return <CircularProgress />;
-  if (error) return <Typography color="error">Error: {error}</Typography>;
-  if (!profile) return <Typography>No profile data found.</Typography>;
+  return <Container maxWidth='lg' className={styles.mainContainer}>
+    {step === Steps.Welcome && <StartScreen />}
+    
+    {/* <button onClick={() => updateStateWithFetchedData('url')}>Fetch</button>
 
-  return (
-    <Card>
-      <CardContent>
-        <Avatar src={profile.person.photoUrl} alt={`${profile.person.firstName} ${profile.person.lastName}`} sx={{ width: 100, height: 100, marginBottom: 2 }} />
-        <Typography variant="h5">{profile.person.firstName} {profile.person.lastName}</Typography>
-        <Typography variant="subtitle1">{profile.person.headline}</Typography>
-        <Typography variant="body2" color="textSecondary">{profile.person.location}</Typography>
-        <Typography variant="body2">Followers: {profile.person.followerCount}</Typography>
-        <Typography variant="body2">Connections: {profile.person.connectionCount}</Typography>
-        <Typography variant="h6" sx={{ mt: 2 }}>Positions:</Typography>
-        <List dense>
-          {profile.person.positions.positionHistory.map((position: any, index: number) => (
-            <ListItem key={index} divider>
-              <ListItemText
-                primary={position.title}
-                secondary={`${position.companyName} - ${position.description}`}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </CardContent>
-    </Card>
-  );
-};
+    {fetchedPersonData && <p>{JSON.stringify(fetchedPersonData)}</p>} */}
 
-export default LinkedInProfileComponent;
+  </Container>
+}
+
+export default App;

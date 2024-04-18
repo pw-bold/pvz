@@ -1,4 +1,4 @@
-export const data = {
+export const mockedData = {
   "success": true,
   "person": {
       "publicIdentifier": "viktoriia-holovko-670115160",
