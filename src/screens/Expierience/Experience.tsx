@@ -16,6 +16,10 @@ function Experience({ }) {
 
   console.log(person);
 
+  const onImproveHandler = () => {
+    // TODO: add
+  }
+
 
   const onSaveHandler = () => {
     updateStep(Steps.Education);
@@ -38,6 +42,8 @@ function Experience({ }) {
           <div className={styles.formEntry}>
             <TextField label='Location' name='location_city' value={[position.companyLocation]} fullWidth/>
           </div>
+          <TextField multiline type='text' label='Description' name='description' value={[position.description]}/>
+          <Button color='success' style={{ alignSelf: 'flex-end' }} variant='contained' onClick={() => onImproveHandler()}>Improve with AI 🪄🪄🪄</Button>
           <div className={styles.formEntry}>
             <TextField type='number' placeholder='Year' label='Start Date' name='location_country' value={position.startEndDate.start.year} />
             <TextField type='text' placeholder='Month' value={MONTHS[position.startEndDate.start?.month - 1]} />
